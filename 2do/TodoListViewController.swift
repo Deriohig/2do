@@ -10,7 +10,7 @@ import UIKit
 
 class TodoListViewController: UITableViewController{
     
-    let items = ["Buy foods","eat foods","eat more foods"]
+    var items = ["Buy foods","eat foods","eat more foods"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,14 +21,14 @@ class TodoListViewController: UITableViewController{
         return items.count
     }
     
+    //MARK - Populate row
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
-        
         cell.textLabel?.text = items[indexPath.row]
-        
         return cell
     }
     
+    //MARK - Select Row
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(items[indexPath.row])
         
@@ -40,7 +40,32 @@ class TodoListViewController: UITableViewController{
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-   
+    //MARK - addrow
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add new Item", message:"", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Item", style: .default){
+            (action) in
+            
+            self.items.append(textField.text!)
+            print(self.items)
+            self.tableView.reloadData()
+        }
+        alert.addAction(action)
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "New Item"
+            textField = alertTextField
+            
+        }
+        
+        present(alert, animated:true, completion: nil)
+        
+    }
+    
 
 }
 
